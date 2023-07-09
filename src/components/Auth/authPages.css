@@ -1,0 +1,216 @@
+main.authMain {
+  display: flex;
+  flex-direction: column;
+  padding: 48px 16px;
+}
+
+main.authMain img.mainImg {
+  display: none;
+}
+
+main.authMain h1 {
+  font-weight: 100;
+  text-align: center;
+}
+
+form.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 0px;
+}
+
+form.authForm > div {
+  display: flex;
+  flex-direction: column;
+}
+
+form.authForm > div > input {
+  border: none;
+  padding: 8px;
+  border: 1px solid var(--indigo-dye);
+  color: var(--indigo-dye);
+  border-radius: 8px;
+  background-color: transparent;
+  margin: 8px 0px 4px 0px;
+}
+
+p.formErrors {
+  font-size: 12px;
+  color: red;
+  font-weight: 300;
+}
+
+button.authFormButton {
+  background-color: var(--indigo-dye);
+  color: var(--platinum);
+  border: none;
+  padding: 12px 4px;
+  border-radius: 8px;
+  transition: 0.2s ease-in-out;
+}
+
+button.authFormButton:hover,
+button.authFormButton:focus {
+  background-color: rgb(48, 88, 111);
+}
+
+div.authProviderGroup {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+div.authProviderGroup button {
+  width: 48%;
+  padding: 8px 4px;
+  border: 1px solid var(--indigo-dye);
+  transition: 0.2s ease-in-out;
+  border-radius: 8px;
+}
+
+div.authProviderGroup button:hover,
+div.authProviderGroup button:focus {
+  background-color: rgb(203, 205, 201);
+}
+
+button.authRelocateLink {
+  background-color: transparent;
+  border: none;
+  display: block;
+  margin: 0 auto;
+  text-decoration: underline;
+  color: var(--indigo-dye);
+  margin-bottom: 8px;
+  transition: 0.2s ease-in-out;
+}
+
+button.authRelocateLink:hover,
+button.authRelocateLink:focus {
+  color: rgb(81, 121, 144);
+}
+
+section.authModal {
+  position: absolute;
+  top: 100px;
+  left: 16px;
+  right: 16px;
+  background-color: rgb(242, 240, 240);
+  border: 2px solid var(--indigo-dye);
+  padding: 24px 24px;
+  border-radius: 16px;
+}
+
+section.authModal.verifyMail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+section.authModal h1 {
+  font-size: 24px;
+}
+
+section.authModal h2 {
+  font-size: 14px;
+  text-align: left;
+  font-weight: 400;
+}
+
+div.displayError p {
+  font-size: 14px;
+}
+
+div.displayError p.success,
+div.displayError p.loading {
+  color: rgb(43, 158, 43);
+}
+
+div.displayError p.error {
+  color: rgb(175, 49, 49);
+}
+
+@media screen and (min-width: 480px) {
+  form.authForm {
+    padding: 24px 32px;
+  }
+
+  div.authProviderGroup {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  section.authModal {
+    left: 64px;
+    right: 64px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  form.authForm {
+    padding: 24px 72px;
+  }
+
+  div.authProviderGroup {
+    padding-left: 72px;
+    padding-right: 72px;
+  }
+
+  section.authModal {
+    left: 96px;
+    right: 96px;
+  }
+
+  section.authModal.verifyMail {
+    gap: 24px;
+  }
+}
+
+@media screen and (min-width: 968px) {
+  main.authMain {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    gap: 5%;
+  }
+
+  main.authMain img.mainImg {
+    display: block;
+    width: 400px;
+  }
+
+  div.authPage {
+    background-color: rgb(235, 232, 232);
+    padding: 48px 16px;
+    border-radius: 8px;
+  }
+
+  section.authModal {
+    left: 25%;
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  main.authMain {
+    padding: 0px 10%;
+  }
+
+  div.authPage {
+    padding: 48px 48px;
+  }
+
+  form.authForm {
+    padding: 24px 32px;
+  }
+
+  div.authProviderGroup {
+    display: flex;
+  }
+
+  section.authModal {
+    left: 30%;
+    width: 40%;
+  }
+}

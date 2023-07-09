@@ -1,0 +1,33 @@
+:root {
+  --lapis-lazuli: #2f6690ff;
+  --cerulean: #3a7ca5ff;
+  --platinum: #d9dcd6ff;
+  --indigo-dye: #16425bff;
+  --sky-blue: #81c3d7ff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: "Raleway", sans-serif;
+}
+
+body {
+  background-color: var(--platinum);
+  color: var(--indigo-dye);
+}
+
+button:hover,
+button:focus {
+  cursor: pointer;
+}
