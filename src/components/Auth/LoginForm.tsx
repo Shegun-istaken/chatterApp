@@ -12,7 +12,7 @@ function LoginForm() {
   const {signUpWithGoogle} = useGoogle()
   const { signIn } = useVerifyMail();
   const navigate = useNavigate();
-  const { signInReport, updateSignInReport } = AuthConsumer();
+  const { signInReport } = AuthConsumer();
   const [verifying, setVerifying] = useState(false);
 
   const formik = useFormik({
@@ -74,9 +74,9 @@ function LoginForm() {
       </form>
       <div className="authProviderGroup">
         <button onClick={() => signUpWithGoogle()}>Sign In with Google</button>
-        <button onClick={() => alert("not yet available")}>
+        {/* <button onClick={() => alert("not yet available")}>
           Sign In With Github
-        </button>
+        </button> */}
       </div>
       <button
         className="authRelocateLink"

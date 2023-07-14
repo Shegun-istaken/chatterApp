@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import useVerifyMail from "../hooks/useVerifyMail";
 import AuthConsumer from "../context/UserContext";
 import {
   getAuth,
@@ -23,7 +25,12 @@ import {
   collection,
   getDocs,
   getDoc,
+  query,
+  where,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -41,6 +48,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore(app);
+const storage = getStorage();
 
 function sendVerificationMail() {
   if (auth.currentUser) {
@@ -61,18 +69,18 @@ function handleSignOut() {
 }
 
 function useGoogle() {
-  const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
+  const { checkUserData } = useVerifyMail();
   function signUpWithGoogle() {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
         console.log(user);
-        navigate("/restricted");
+        checkUserData();
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
@@ -107,21 +115,21 @@ function passwordReset(email: string) {
     });
 }
 
-function updateUserDisplayName(userName: string) {
-  updateProfile(auth.currentUser, {
-    displayName: userName,
-    randomPropertyName: `${userName}blablabla`,
-  });
-}
+// function updateUserDisplayName(userName: string) {
+//   updateProfile(auth.currentUser, {
+//     displayName: userName,
+//     randomPropertyName: `${userName}blablabla`,
+//   });
+// }
 
 function useManageUsers() {
-  const { createUserReport, setCreateUserReport, userData, setUserData } =
-    AuthConsumer();
+  const { setCreateUserReport, userData, setUserData } = AuthConsumer();
+  const navigate = useNavigate();
 
   async function checkUsers(id: string) {
     const querySnapshot = await getDocs(collection(db, "Users"));
-    querySnapshot.forEach((doc) => {
-      if (doc.userName) {
+    querySnapshot.forEach((doc: any) => {
+      if (doc.username) {
         console.log(doc.userName, id);
       } else {
         console.log(doc);
@@ -132,14 +140,22 @@ function useManageUsers() {
     });
   }
 
-  async function setNewUser(userName, data) {
+  async function setNewUser(userName, data, photo) {
     const id = auth.currentUser.uid;
 
     try {
       await checkUsers(userName);
-      await setDoc(doc(db, "Users", id), { ...data });
-      setUserData({ ...userData, userName: data.userName, userID: id });
+      await uploadCoverPhoto(id, photo, "avatars");
+      const url = await getCoverURL(id, "avatars");
+      await setDoc(doc(db, "Users", id), { ...data, avatarURL: url });
+      setUserData({
+        ...userData,
+        userName: data.userName,
+        userID: id,
+        avatarURL: url,
+      });
       setCreateUserReport("success");
+      navigate("/feed");
     } catch (error) {
       setCreateUserReport(error.message);
     }
@@ -165,12 +181,186 @@ function useUsers() {
   return { getUser };
 }
 
-async function addNewPost(values) {
+async function addNewPost(values, file) {
   try {
-    await addDoc(collection(db, "Posts"), values);
-    console.log("success");
+    const response = await addDoc(collection(db, "Posts"), values);
+
+    await uploadCoverPhoto(response.id, file, "images");
+
+    const url = await getCoverURL(response.id, "images");
+
+    updateDoc(doc(db, "Posts", response.id), { coverURL: url });
   } catch (error) {
     console.log(error);
+  }
+}
+
+async function updatePost(values, file, id) {
+  try {
+    if (file && typeof file != "string") {
+      await uploadCoverPhoto(id, file, "images");
+      const url = await getCoverURL(id, "images");
+      updateDoc(doc(db, "Posts", id), { ...values, coverURL: url });
+    } else if (typeof file == "string") {
+      updateDoc(doc(db, "Posts", id), { ...values });
+    }
+  } catch (error) {
+    console.log("updatePost", error);
+  }
+}
+
+function useFetchPosts() {
+  const [posts, setPosts] = useState(null);
+
+  useEffect(() => {
+    async function getPostsPreview() {
+      const querySnapshot = await getDocs(collection(db, "Posts"));
+      const docIdSet = new Set();
+
+      const fetchedPosts = querySnapshot.docs
+        .filter((doc) => {
+          // Check if the document ID already exists in the Set
+          if (docIdSet.has(doc.id)) {
+            return false; // Skip this document
+          }
+          docIdSet.add(doc.id); // Add the document ID to the Set
+          return true;
+        })
+        .map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            author: data.author,
+            title: data.title,
+            categories: data.categories,
+            coverURL: data.coverURL,
+          };
+        });
+
+      setPosts(fetchedPosts);
+    }
+
+    getPostsPreview();
+  }, []);
+
+  return { posts };
+}
+
+function useGetUserPosts() {
+  const [userPosts, setUserPosts] = useState(null);
+  const { getUser } = useUsers();
+
+  useEffect(() => {
+    async function getUserPosts() {
+      const user = await getUser();
+      const userName = user.userName;
+      const q = query(collection(db, "Posts"), where("author", "==", userName));
+
+      const querySnapshot = await getDocs(q);
+      const docIdSet = new Set();
+
+      const fetchedPosts = querySnapshot.docs
+        .filter((doc) => {
+          // Check if the document ID already exists in the Set
+          if (docIdSet.has(doc.id)) {
+            return false; // Skip this document
+          }
+          docIdSet.add(doc.id); // Add the document ID to the Set
+          return true;
+        })
+        .map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            author: data.author,
+            title: data.title,
+            categories: data.categories,
+            coverURL: data.coverURL,
+          };
+        });
+
+      setUserPosts(fetchedPosts);
+    }
+
+    getUserPosts();
+  }, []);
+
+  return { userPosts };
+}
+
+async function getCategoryPosts(type) {
+  const q = query(
+    collection(db, "Posts"),
+    where("categories", "array-contains", type)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const docIdSet = new Set();
+
+  const fetchedPosts = querySnapshot.docs
+    .filter((doc) => {
+      if (docIdSet.has(doc.id)) {
+        return false;
+      }
+      docIdSet.add(doc.id);
+      return true;
+    })
+    .map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        author: data.author,
+        title: data.title,
+        categories: data.categories,
+        coverURL: data.coverURL,
+      };
+    });
+
+  return fetchedPosts;
+}
+
+async function getPost(id) {
+  try {
+    const docRef = doc(db, "Posts", id);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    return data;
+  } catch (error) {
+    console.log("getPostError", error.message);
+  }
+}
+
+async function deletePost(id: string) {
+  try {
+    await deleteDoc(doc(db, "Posts", id));
+    console.log("deleted");
+  } catch (error) {
+    console.log("deletePost", error);
+  }
+}
+
+// STORAGE *******************
+
+async function uploadCoverPhoto(id, photo, type) {
+  const imageRef = ref(storage, `${type}/${id}`);
+
+  try {
+    const snapshot = await uploadBytes(imageRef, photo);
+    console.log("uploaded File", snapshot);
+  } catch (error) {
+    console.log("uploadPhoto", error);
+  }
+}
+
+async function getCoverURL(id: string, type: string) {
+  const imageRef = ref(storage, `${type}/${id}`);
+
+  try {
+    const url = await getDownloadURL(imageRef);
+    console.log(url);
+    return url;
+  } catch (error) {
+    console.log("getCover", error);
   }
 }
 
@@ -188,4 +378,10 @@ export {
   passwordReset,
   useManageUsers,
   useUsers,
+  useFetchPosts,
+  useGetUserPosts,
+  getCategoryPosts,
+  getPost,
+  updatePost,
+  deletePost,
 };

@@ -1,16 +1,7 @@
 import EachCategory from "./EachCategory";
+import categories from "../../assets/data/categories";
 
 function CategoriesList({ list, handleChange }) {
-  const categories = [
-    "sports",
-    "entertainment",
-    "fashion",
-    "technology",
-    "art",
-    "culture",
-    "health",
-    "science",
-  ];
 
   return (
     <div>

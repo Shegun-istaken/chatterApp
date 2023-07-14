@@ -10,7 +10,8 @@ import RequireAuth, { RequireEmailVerification } from "./RequireAuth.tsx";
 import PersonalizationForm from "../components/Auth/PersonalizationForm.tsx";
 import ProfilePage from "../components/Profile/ProfilePage.tsx";
 import CreatePost from "../components/Posts/CreatePost.tsx";
-import { Navigate } from "react-router-dom";
+import Feed from "../components/Feed/Feed.tsx";
+import ViewPost from "../components/Posts/ViewPost.tsx";
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/profile",
+        path: "/profile/",
         element: (
           <RequireAuth>
             <ProfilePage />
@@ -81,9 +82,22 @@ const router = createBrowserRouter([
         path: "/createPost",
         element: (
           <RequireAuth>
-            <CreatePost />
+            <CreatePost type="new" />
           </RequireAuth>
         ),
+      },{
+        path: "/editPost/:id",
+        element: (
+          <RequireAuth>
+            <CreatePost type="edit"/>
+          </RequireAuth>
+        )
+      },{
+        path: "/feed",
+        element: <Feed />
+      },{
+        path: "/post/:id",
+        element: <ViewPost />,
       },
     ],
   },

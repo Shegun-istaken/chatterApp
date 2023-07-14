@@ -19,7 +19,7 @@ export default function RequireAuth({ children }: PropsWithChildren) {
 function RequireEmailVerification({ children }: PropsWithChildren) {
   const { emailStatus } = AuthConsumer();
 
-  return emailStatus ? <Navigate to="/restricted" /> : children;
+  return emailStatus ? <Navigate to="/personalData" /> : children;
 }
 
 export { RequireEmailVerification };

@@ -28,6 +28,10 @@ body {
 }
 
 button:hover,
-button:focus {
+button:focus, i:hover, i:focus {
   cursor: pointer;
+}
+
+li {
+  list-style-type: none;
 }

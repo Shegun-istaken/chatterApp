@@ -33,9 +33,9 @@ function SignUpForm() {
     signUpWithGoogle();
   }
 
-  function handleGithubSubmit() {
-    alert("not yet available");
-  }
+  // function handleGithubSubmit() {
+  //   alert("not yet available");
+  // }
 
   return (
     <section>
@@ -54,36 +54,6 @@ function SignUpForm() {
             <p className="formErrors">{formik.errors.userName}</p>
           ) : null}
         </div>
-        {/* 
-        <div>
-          <label htmlFor="firstName">First Name</label>
-          <input
-            id="firstName"
-            name="firstName"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.firstName}
-          />
-          {formik.touched.firstName && formik.errors.firstName ? (
-            <p className="formErrors">{formik.errors.firstName}</p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            id="lastName"
-            name="lastName"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.lastName}
-          />
-          {formik.touched.lastName && formik.errors.lastName ? (
-            <p className="formErrors">{formik.errors.lastName}</p>
-          ) : null}
-        </div> */}
 
         <div>
           <label htmlFor="email">Email Address</label>
@@ -141,7 +111,7 @@ function SignUpForm() {
       </form>
       <div className="authProviderGroup">
         <button onClick={onGoogleSubmit}>Sign Up with Google</button>
-        <button onClick={handleGithubSubmit}>Sign Up with Github</button>
+        {/* <button onClick={handleGithubSubmit}>Sign Up with Github</button> */}
       </div>
       <Link to="/login">
         <button className="authRelocateLink">Have an account already? Log in here</button>

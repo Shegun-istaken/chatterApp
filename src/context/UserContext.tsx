@@ -5,7 +5,7 @@ import {
   useUsers,
 } from "../firebase_setup/firebase.ts";
 
-const authContext = createContext();
+const authContext = createContext(null);
 
 function useAuth() {
   const [authed, setAuthed] = useState(undefined);
@@ -13,7 +13,7 @@ function useAuth() {
   const [signInReport, setSignInReport] = useState("");
   const [signUpReport, setSignUpReport] = useState("");
   const [createUserReport, setCreateUserReport] = useState("");
-  const [userData, setUserData] = useState("");
+  const [userData, setUserData] = useState(null);
 
   function logInAuth() {
     setAuthed(true);
@@ -31,7 +31,7 @@ function useAuth() {
     setEmailStatus(false);
   }
 
-  function updateSignInReport(report) {
+  function updateSignInReport(report: string) {
     setSignInReport(report);
   }
 

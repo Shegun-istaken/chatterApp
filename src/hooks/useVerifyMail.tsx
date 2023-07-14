@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   sendVerificationMail,
   updateProfile,
+  useUsers,
 } from "../firebase_setup/firebase";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ function useVerifyMail() {
   const navigate = useNavigate();
   const auth = getAuth();
   const { updateSignInReport, updateSignUpReport } = AuthConsumer();
+  const { getUser } = useUsers();
 
   function signUp(email: string, password: string, userName: string) {
     createUserWithEmailAndPassword(auth, email, password)
@@ -42,7 +44,7 @@ function useVerifyMail() {
   }
 
   function signIn(email: string, password: string) {
- signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -59,13 +61,23 @@ function useVerifyMail() {
       });
   }
 
+  async function checkUserData() {
+    const data = await getUser();
+
+    if (data) {
+      navigate("/feed");
+    } else {
+      navigate("/personalData");
+    }
+  }
+
   async function checkMailStatus(type: string) {
     // window.location.reload()
     switch (type) {
       case "signup":
         if (auth.currentUser) {
           if (auth.currentUser.emailVerified) {
-            navigate("/restricted");
+            checkUserData();
           } else {
             navigate(`/signup/verifyMail`);
           }
@@ -75,18 +87,16 @@ function useVerifyMail() {
       case "login":
         if (auth.currentUser) {
           if (auth.currentUser.emailVerified) {
-            console.log("verified");
-            navigate("/restricted");
+            checkUserData();
           } else {
             navigate(`/login/verifyMail`);
-            console.log("notVerified", auth.currentUser);
           }
         }
         break;
     }
   }
 
-  return { checkMailStatus, signUp, signIn };
+  return { checkMailStatus, signUp, signIn, checkUserData };
 }
 
 export default useVerifyMail;

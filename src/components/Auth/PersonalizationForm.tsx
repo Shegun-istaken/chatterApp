@@ -3,11 +3,12 @@ import { useManageUsers } from "../../firebase_setup/firebase";
 import AuthConsumer from "../../context/UserContext";
 
 function PersonalizationForm() {
-  const userNameRef = useRef();
-  const statusRef = useRef();
-  const nameRef = useRef();
-  const {setNewUser} = useManageUsers()
-  const {createUserReport} = AuthConsumer()
+  const userNameRef = useRef<HTMLInputElement>(null);
+  const statusRef = useRef<HTMLSelectElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const avatarRef = useRef<HTMLInputElement>(null);
+  const { setNewUser } = useManageUsers();
+  const { createUserReport } = AuthConsumer();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -17,7 +18,7 @@ function PersonalizationForm() {
       status: statusRef.current.value,
     };
 
-    setNewUser(userNameRef.current.value, formValues);
+    setNewUser(userNameRef.current.value, formValues, avatarRef.current.files[0]);
   }
 
   return (
@@ -41,9 +42,19 @@ function PersonalizationForm() {
           <option value="reader">Reader</option>
         </select>
 
+        <label htmlFor="avatarInput">
+          Add a Profile Picture <small>optional</small>
+        </label>
+        <input
+          ref={avatarRef}
+          type="file"
+          id="avatarInput"
+          accept=".jpg, .jpeg, .png"
+        />
+
         <button>Submit</button>
 
-        {createUserReport && <p>{createUserReport}</p> }
+        {createUserReport && <p>{createUserReport}</p>}
       </form>
     </div>
   );
