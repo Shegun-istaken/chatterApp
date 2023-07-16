@@ -1,17 +1,33 @@
 import { handleSignOut } from "../../firebase_setup/firebase";
 import { Link } from "react-router-dom";
 
-function DropDownNav({ openNav, handleClick }: { openNav: boolean, handleClick: any }) {
+function DropDownNav({
+  userName,
+  openNav,
+  handleClick,
+}: {
+  userName: string,
+  openNav: boolean;
+  handleClick: any;
+}) {
   return (
     <>
       {openNav && (
         <ul className="dropDownNav" id="dropDown" onClick={handleClick}>
           <li>
-            <Link to="/home"><button>Home</button></Link>
+            <button>
+              <Link to="/home">Home</Link>
+            </button>
           </li>
-          <button className="navFeed">Feed</button>
+
+          <button className="navFeed">
+            <Link to="/feed">Feed</Link>
+          </button>
+
           <li>
-            <Link to="/profile" ><button>Your Profile</button></Link>
+            <button>
+              <Link to={`/profile/${userName}`}>Your Profile</Link>
+            </button>
           </li>
           <li>
             <button onClick={handleSignOut}>Sign Out</button>

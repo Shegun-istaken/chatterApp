@@ -40,7 +40,11 @@ function ViewPost() {
 
   function handleDeletePost() {
     deletePost(id);
-    navigate("/profile");
+    navigate(`/profile/${userData.userName}`);
+  }
+
+  function handleAuthorClick() {
+    navigate(`/profile/${author.userName}`);
   }
 
   return (
@@ -57,13 +61,14 @@ function ViewPost() {
           <h1>{post.title}</h1>
           {author && (
             <div className="authorDetails">
-              <div>
+              <div onClick={handleAuthorClick}>
                 <p>{author.name}</p>
                 <p>{author.userName}</p>
               </div>
               <UserAvatar url={author.avatarURL} />
             </div>
           )}
+          {post.date && <p>{post.date.toDate().toGMTString()}</p>}
 
           {post.coverURL && (
             <img className="postCover" src={post.coverURL} alt="" />

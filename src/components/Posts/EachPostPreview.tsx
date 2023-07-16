@@ -22,7 +22,13 @@ function EachPostPreview({ item }) {
         />
       )}
       <div className="previewDetails">
-        {typeof item.title == "string" && <h3>{item.title.slice(0, 25)}</h3>}
+        {typeof item.title == "string" && (
+          <h3>
+            {item.title.length > 21
+              ? `${item.title.slice(0, 22)}...`
+              : item.title}
+          </h3>
+        )}
         <div className="previewCategories">
           {item.categories.map((item) => (
             <p className="categoryPreview" key={item}>
@@ -31,9 +37,12 @@ function EachPostPreview({ item }) {
           ))}
         </div>
 
-        <div className="authorDetails">
-          <p>{item.author}</p>
-          <i className="material-icons md-24">person</i>
+        <div className="moreDetails">
+          <div className="authorDetails">
+            <p>{item.author}</p>
+            <i className="material-icons md-24">person</i>
+          </div>
+          {item.date && <p>{item.date.toDate().toDateString()}</p>}
         </div>
       </div>
       <button className="openPost" onClick={handlePostClick}>

@@ -1,0 +1,55 @@
+div.profilePage{
+    padding: 16px 0px;
+}
+
+div.profileData{
+    padding: 0px 24px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+div.profileData div:not(:first-child){
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+div.profileDataHeading{
+    display: flex;
+    gap: 8px;
+}
+
+img.profileAvatar{
+    width: 48px;
+}
+
+div.profileData h3{
+    font-size: 18px;
+}
+
+div.profileData span{
+    font-weight: 500;
+}
+
+button.createProfilePost{
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 8px;
+}
+
+@media screen and (min-width: 540px){
+
+    div.profileData{
+        padding: 0px 64px;
+    }
+
+}
+
+@media screen and (min-width: 768px){
+
+    button.createProfilePost{
+        width: 30%;
+    }
+
+}

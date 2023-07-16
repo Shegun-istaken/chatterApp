@@ -3,7 +3,7 @@ import AuthConsumer from "../../context/UserContext";
 import "./NavBar.css";
 import DropDownNav from "./DropDownNav";
 import chatter from "../../assets/CHATTER.svg";
-import { useState } from "react";
+import { useState, } from "react";
 import UserAvatar from "./userAvatar";
 
 function MoveToFeed() {
@@ -46,7 +46,7 @@ function NavBar() {
   };
 
   function handleJumpProfile() {
-    navigate("/profile");
+    navigate(`/profile/${userData.userName}`);
   }
 
   return (
@@ -68,7 +68,11 @@ function NavBar() {
           {userData ? (
             <>
               <div className="userData" onClick={handleJumpProfile}>
-                <UserAvatar  url={userData.avatarURL} className="navAvatar" size="md-48" />
+                <UserAvatar
+                  url={userData.avatarURL}
+                  className="navAvatar"
+                  size="md-48"
+                />
                 <p>{userData.userName}</p>
               </div>
               <div className="toggleNavDrop">
@@ -80,6 +84,7 @@ function NavBar() {
                   menu
                 </i>
                 <DropDownNav
+                  userName={userData.userName}
                   openNav={openNav}
                   handleClick={handleDropDownClick}
                 />
@@ -90,9 +95,13 @@ function NavBar() {
           )}
         </div>
       ) : (
-        <div className="">
-          <Link to="/signup"> Sign Up</Link>
-          <Link to="/login"> Log In </Link>
+        <div className="navAuth">
+          <Link to="/signup">
+            <button className="common"> Sign Up</button>
+          </Link>
+          <Link to="/login">
+            <button className="common"> Log In</button>{" "}
+          </Link>
         </div>
       )}
     </nav>

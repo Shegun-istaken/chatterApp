@@ -10,6 +10,17 @@ nav.main div.navBigFeed {
   display: none;
 }
 
+div.navAuth{
+  display: flex;
+  gap: 8px;
+}
+
+div.navAuth button{
+  padding: 16px 24px;
+  border-radius: 8px;
+  transition: 0.2s ease-in-out;
+}
+
 nav.main img.logo {
   width: 60%;
 }
@@ -59,6 +70,11 @@ ul.dropDownNav button {
   border: 1px solid var(--platinum);
   border-radius: 8px;
   transition: 0.2s ease-in-out;
+}
+
+ul.dropDownNav button a{
+  text-decoration: none;
+  color: var(--platinum);
 }
 
 ul.dropDownNav button:hover,

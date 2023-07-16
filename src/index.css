@@ -43,10 +43,27 @@ li {
   font-size: 24px;
 }
 
-.md-32{
+.md-32 {
   font-size: 32px;
 }
 
-.md-48{
+.md-48 {
   font-size: 48px;
 }
+
+button.common {
+  background-color: var(--indigo-dye);
+  color: var(--platinum);
+  transition: 0.2s ease-in-out;
+}
+
+button.common:hover,
+button.common:focus {
+  background-color: hsla(202, 61%, 22%, 0.8);
+}
+
+button.common a{
+  text-decoration: none;
+  color: var(--platinum)
+}
+

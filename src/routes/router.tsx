@@ -71,12 +71,22 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/profile/",
+        path: "/profile",
         element: (
           <RequireAuth>
             <ProfilePage />
           </RequireAuth>
         ),
+        children: [
+          {
+            path: "/profile/:userName",
+            element: (
+              <RequireAuth>
+                <ProfilePage />
+              </RequireAuth>
+            )
+          }
+        ]
       },
       {
         path: "/createPost",

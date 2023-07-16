@@ -81,7 +81,11 @@ function CreatePost({ type }: { type: string }) {
 
   function handleSubmit() {
     if (values.title && values.content) {
-      const postData = { ...values, author: userData.userName };
+      const postData = {
+        ...values,
+        author: userData.userName,
+        date: new Date(),
+      };
       delete postData.coverURL;
 
       if (type == "new") {
@@ -100,11 +104,19 @@ function CreatePost({ type }: { type: string }) {
     setValues(initialData);
   }
 
+  // const date = new Date();
+  // console.log(0, date)
+  // console.log(1, date.toLocaleDateString());
+  // console.log(2, date.toDateString());
+  // console.log(3, date.toGMTString());
+
   return (
     <div className="createPost postCase">
       <h1>Create a New Post here</h1>
       <div className="titleInput">
-        <label htmlFor="title">What's the title of your Article?</label>
+        <label htmlFor="title">
+          <h2>What's the title of your Article?</h2>
+        </label>
         <input
           value={values.title}
           onChange={(e) => {
@@ -120,7 +132,7 @@ function CreatePost({ type }: { type: string }) {
       />
       <div className="addCover">
         <label htmlFor="coverImage">
-          Upload a Cover Image for your Article
+          <h2>Upload a Cover Image for your Article</h2>
         </label>
         <input
           onChange={(e) => {

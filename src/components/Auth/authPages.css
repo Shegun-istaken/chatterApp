@@ -57,13 +57,14 @@ button.authFormButton:focus {
 
 div.authProviderGroup {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: space-between;
   padding-bottom: 16px;
 }
 
 div.authProviderGroup button {
-  width: 48%;
-  padding: 8px 4px;
+  /* width: 48%; */
+  padding: 16px 24px;
   border: 1px solid var(--indigo-dye);
   transition: 0.2s ease-in-out;
   border-radius: 8px;

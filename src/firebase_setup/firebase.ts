@@ -234,6 +234,7 @@ function useFetchPosts() {
             title: data.title,
             categories: data.categories,
             coverURL: data.coverURL,
+            date: data.date,
           };
         });
 
@@ -246,14 +247,11 @@ function useFetchPosts() {
   return { posts };
 }
 
-function useGetUserPosts() {
-  const [userPosts, setUserPosts] = useState(null);
-  const { getUser } = useUsers();
+// function useGetUserPosts() {
+//   const [userPosts, setUserPosts] = useState(null);
 
-  useEffect(() => {
-    async function getUserPosts() {
-      const user = await getUser();
-      const userName = user.userName;
+//   useEffect(() => {
+    async function getUserPosts(userName: string) {
       const q = query(collection(db, "Posts"), where("author", "==", userName));
 
       const querySnapshot = await getDocs(q);
@@ -276,17 +274,18 @@ function useGetUserPosts() {
             title: data.title,
             categories: data.categories,
             coverURL: data.coverURL,
+            date: data.date,
           };
         });
 
-      setUserPosts(fetchedPosts);
+      return fetchedPosts
     }
 
-    getUserPosts();
-  }, []);
+  //   getUserPosts();
+  // }, []);
 
-  return { userPosts };
-}
+//   return { userPosts };
+// }
 
 async function getAuthorData(username){
 
@@ -326,6 +325,7 @@ async function getCategoryPosts(type) {
         title: data.title,
         categories: data.categories,
         coverURL: data.coverURL,
+        date: data.date,
       };
     });
 
@@ -392,7 +392,7 @@ export {
   useManageUsers,
   useUsers,
   useFetchPosts,
-  useGetUserPosts,
+  getUserPosts,
   getCategoryPosts,
   getPost,
   updatePost,
