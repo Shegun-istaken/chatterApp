@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import cover from "../../assets/placeholderCover.jpg";
 
 function EachPostPreview({ item }) {
   const navigate = useNavigate();
@@ -8,19 +9,36 @@ function EachPostPreview({ item }) {
   }
 
   return (
-    <div onClick={handlePostClick}>
+    <div className="eachPostPreview" onClick={handlePostClick}>
       {item.coverURL && (
         <img
+          className="postCover"
           src={item.coverURL}
           alt="cover image"
-          width="240px"
-          height="240px"
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src = `${cover}`;
+          }}
         />
       )}
-      <p>{item.author}</p>
-      <p>{item.title}</p>
-      <pre>{item.categories}</pre>
-      <button onClick={handlePostClick}>Open Post</button>
+      <div className="previewDetails">
+        {typeof item.title == "string" && <h3>{item.title.slice(0, 25)}</h3>}
+        <div className="previewCategories">
+          {item.categories.map((item) => (
+            <p className="categoryPreview" key={item}>
+              {item}
+            </p>
+          ))}
+        </div>
+
+        <div className="authorDetails">
+          <p>{item.author}</p>
+          <i className="material-icons md-24">person</i>
+        </div>
+      </div>
+      <button className="openPost" onClick={handlePostClick}>
+        Open Post
+      </button>
     </div>
   );
 }

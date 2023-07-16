@@ -9,6 +9,7 @@
 * {
   margin: 0;
   padding: 0;
+  border: none;
 }
 
 *,
@@ -28,10 +29,24 @@ body {
 }
 
 button:hover,
-button:focus, i:hover, i:focus {
+button:focus,
+i:hover,
+i:focus {
   cursor: pointer;
 }
 
 li {
   list-style-type: none;
+}
+
+.md-24 {
+  font-size: 24px;
+}
+
+.md-32{
+  font-size: 32px;
+}
+
+.md-48{
+  font-size: 48px;
 }

@@ -124,6 +124,10 @@ ul.dropDownNav button:focus {
 
 @media screen and (min-width: 768px){
 
+  nav.main{
+    padding: 64px 32px;
+  }
+
     nav.main img.logo{
         width: 20%;
     }
@@ -133,8 +137,8 @@ ul.dropDownNav button:focus {
 @media screen and (min-width: 920px){
 
     nav.main{
-        padding-top: 64px;
-        padding-bottom: 48px;
+      padding: 64px 64px 48px 64px;
+
     }
 
     div.navBigFeed button{

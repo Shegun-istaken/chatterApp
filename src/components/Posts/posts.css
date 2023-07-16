@@ -1,0 +1,256 @@
+div.viewPost, div.postCase{
+    padding: 24px;
+}
+
+div.viewPostContent{
+ display: flex;
+ flex-direction: column;
+ gap: 24px;
+}
+
+div.authorFunctions{
+    /* margin: 0 auto; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    margin: 0px !important;
+    padding: 0px;
+}
+
+div.authorFunctions button{
+    padding: 16px 32px;
+    background-color: var(--indigo-dye);
+    border: none;
+    color: var(--platinum);
+    border-radius: 4px;
+    margin: 0px;
+    width: 40%;
+}
+
+div.authorDetails{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+div.authorDetails img{
+    width: 48px;
+    border-radius: 32px;
+}
+
+div.postMarkdown h1{
+    font-size: 28px;
+}
+
+div.postMarkdown p{
+    line-height: 24px;
+}
+
+img.postCover{
+    width: 100%;
+}
+
+div.createPost{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+div.createPost div.titleInput{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+div.titleInput input{
+    border: none;
+    border-radius: 4px;
+    padding: 16px;
+    font-size: 24px;
+}
+
+div.titleInput input:focus{
+    outline: none;
+}
+
+div.createPost div.categoryList{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+}
+
+div.categoryList div.eachCategory{
+    display: flex;
+    gap: 8px;
+    background-color: var(--indigo-dye);
+    padding: 8px;
+    color: var(--platinum);
+    border-radius: 8px;
+}
+
+div.createPost div.addCover{
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+div.createPost div.createPostAction{
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+div.createPostAction button{
+    background-color: var(--indigo-dye);
+    padding: 16px 16px;
+    color: var(--platinum);
+    border: none;
+    border-radius: 8px;
+}
+
+div.postsPreview{
+    display: flex;
+    flex-direction: column;
+    padding: 48px 24px;
+    justify-content: center;
+    align-items: center;
+    row-gap: 16px;
+}
+
+div.eachPostPreview{
+    width: 100%;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    align-items: flex-start;
+    background-color: var(--cerulean);
+    border-radius: 8px;
+    color: var(--platinum)
+}
+
+div.eachPostPreview img.postCover{
+    width: 80%;
+    margin: 0 auto;
+    height: auto;
+}
+
+div.eachPostPreview div.previewDetails{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+div.eachPostPreview h3{
+    font-size: 24px;
+}
+
+div.eachPostPreview div.authorDetails{
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    color: var(--indigo-dye);
+}
+
+div.previewCategories{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px;
+}
+
+p.categoryPreview{
+    border: 1px solid var(--indigo-dye);
+    font-size: 12px;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+div.eachPostPreview i{
+    border: 1px solid var(--indigo-dye);
+    border-radius: 96px;
+}
+
+div.eachPostPreview button.openPost{
+    width: 100%;
+    background-color: var(--platinum);
+    padding: 16px 16px;
+    border-radius: 8px;
+}
+
+@media screen and (min-width: 480px){
+
+    div.postsPreview{
+        row-gap: 24px;
+    }
+
+    div.eachPostPreview{
+        width: 80%;
+    }
+}
+
+@media screen and (min-width: 540px){
+    img.postCover{
+        height: 320px;
+        object-fit: cover;
+    }
+
+    div.postsPreview{
+        row-gap: 32px;
+    }
+
+    div.eachPostPreview{
+        width: 70%;
+    }
+}
+
+@media screen and (min-width: 768px){
+
+    div.viewPost, div.postCase{
+        padding: 24px 64px;
+    }
+
+    img.postCover{
+        height: 480px;
+    }
+
+    div.authorFunctions button{
+        font-size: 18px;
+    }
+
+    div.titleInput input{
+        padding: 32px 16px;
+    }
+
+    div.postsPreview{
+        flex-flow: row wrap;
+        justify-content: center;
+        gap: 24px;
+        margin: 0 auto;
+    }
+    
+    div.eachPostPreview{
+        width: 320px;
+        height: 400px;
+        justify-content: space-between;
+    }
+
+    div.postsPreview img.postCover{
+        height: 160px;
+        object-fit: cover;
+    }
+
+}
+
+@media screen and (min-width: 1024px){
+
+    div.viewPost, div.postCase{
+        padding: 24px 96px;
+    }
+
+    img.postCover{
+        height: 640px;
+    }
+}
+

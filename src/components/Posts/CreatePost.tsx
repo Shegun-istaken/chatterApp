@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import CategoriesList from "./CategoriesList";
 import { addNewPost, getPost, updatePost } from "../../firebase_setup/firebase";
 import AuthConsumer from "../../context/UserContext";
-import PreviewFullPost from "./PreviewFullPost";
+// import PreviewFullPost from "./PreviewFullPost";
 import { useParams, useNavigate } from "react-router-dom";
 import { DocumentData } from "firebase/firestore";
 
@@ -25,9 +25,11 @@ type initialDataType = {
 };
 
 function CreatePost({ type }: { type: string }) {
-  const [openPreview, setOpenPreview] = useState(false);
+  // const [openPreview, setOpenPreview] = useState(false);
   const { userData } = AuthConsumer();
-  const [values, setValues] = useState<initialDataType | DocumentData | any>(initialData);
+  const [values, setValues] = useState<initialDataType | DocumentData | any>(
+    initialData
+  );
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -69,13 +71,13 @@ function CreatePost({ type }: { type: string }) {
     } else setValues({ ...values, categories: [...values.categories, value] });
   }
 
-  function previewPost(type?: string) {
-    if (type != "close") {
-      setOpenPreview(true);
-    } else {
-      setOpenPreview(false);
-    }
-  }
+  // function previewPost(type?: string) {
+  //   if (type != "close") {
+  //     setOpenPreview(true);
+  //   } else {
+  //     setOpenPreview(false);
+  //   }
+  // }
 
   function handleSubmit() {
     if (values.title && values.content) {
@@ -99,51 +101,66 @@ function CreatePost({ type }: { type: string }) {
   }
 
   return (
-    <div>
+    <div className="createPost postCase">
       <h1>Create a New Post here</h1>
-      <label htmlFor="title">What's the title of your Article?</label>
-      <input
-        value={values.title}
-        onChange={(e) => {
-          handleInputChange(e, "title");
-        }}
-        id="title"
-        type="text"
-      />
+      <div className="titleInput">
+        <label htmlFor="title">What's the title of your Article?</label>
+        <input
+          value={values.title}
+          onChange={(e) => {
+            handleInputChange(e, "title");
+          }}
+          id="title"
+          type="text"
+        />
+      </div>
       <CategoriesList
         list={values.categories}
         handleChange={handleCategoryChange}
       />
-      <label htmlFor="coverImage">Upload a Cover Image for your Article</label>
-      <input
-        onChange={(e) => {
-          handleInputChange(e, "cover");
-        }}
-        type="file"
-        id="coverImage"
-        accept=".jpg, .jpeg, .png"
-      />
-
-      <button
-        onClick={() => {
-          previewPost("open");
-        }}
-      >
-        Preview your post
-      </button>
-      <button onClick={handleSubmit}>Publish</button>
-
-      <button onClick={clearAll}>Clear All</button>
-      <SimpleMdeReact value={values.content} onChange={handleContentChange} />
-      {openPreview && (
-        <PreviewFullPost
-          item={values}
-          close={() => {
-            previewPost("close");
+      <div className="addCover">
+        <label htmlFor="coverImage">
+          Upload a Cover Image for your Article
+        </label>
+        <input
+          onChange={(e) => {
+            handleInputChange(e, "cover");
           }}
-          submit={handleSubmit}
+          type="file"
+          id="coverImage"
+          accept=".jpg, .jpeg, .png"
         />
-      )}
+      </div>
+
+      <div>
+        <h2>Write your Post Content</h2>
+        <p>
+          <small>Highlight text to format it</small>
+        </p>
+        <SimpleMdeReact value={values.content} onChange={handleContentChange} />
+        {/* {openPreview && (
+          <PreviewFullPost
+            item={values}
+            close={() => {
+              previewPost("close");
+            }}
+            submit={handleSubmit}
+          />
+        )} */}
+      </div>
+
+      <div className="createPostAction">
+        {/* <button
+          onClick={() => {
+            previewPost("open");
+          }}
+        >
+          Preview your post
+        </button> */}
+        <button onClick={handleSubmit}>Publish</button>
+
+        <button onClick={clearAll}>Clear All</button>
+      </div>
     </div>
   );
 }

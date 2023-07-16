@@ -12,7 +12,7 @@ function EachCategory({ name, list, handleChange }) {
   }, [list, name]);
 
   return (
-    <div>
+    <div className="eachCategory">
       <label htmlFor={name}>{name}</label>
       <input type="checkbox" id={name} checked={isChecked} onChange={()=>handleChange(name)} />
     </div>

@@ -288,6 +288,19 @@ function useGetUserPosts() {
   return { userPosts };
 }
 
+async function getAuthorData(username){
+
+    const q = query(collection(db, "Users"), where("userName", "==", username));
+
+    const querySnapshot = await getDocs(q);
+    // const docIdSet = new Set();
+
+    const doc = await querySnapshot.docs[0]
+    const data = await doc.data()
+
+    return data
+}
+
 async function getCategoryPosts(type) {
   const q = query(
     collection(db, "Posts"),
@@ -384,4 +397,5 @@ export {
   getPost,
   updatePost,
   deletePost,
+  getAuthorData,
 };

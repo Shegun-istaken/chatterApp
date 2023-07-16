@@ -4,6 +4,7 @@ import "./NavBar.css";
 import DropDownNav from "./DropDownNav";
 import chatter from "../../assets/CHATTER.svg";
 import { useState } from "react";
+import UserAvatar from "./userAvatar";
 
 function MoveToFeed() {
   return (
@@ -67,21 +68,13 @@ function NavBar() {
           {userData ? (
             <>
               <div className="userData" onClick={handleJumpProfile}>
-                {userData.avatarURL ? (
-                  <img
-                    className="navAvatar"
-                    src={userData.avatarURL}
-                    alt="user's avatar"
-                  />
-                ) : (
-                  <i className="material-icons md-48">person</i>
-                )}
+                <UserAvatar  url={userData.avatarURL} className="navAvatar" size="md-48" />
                 <p>{userData.userName}</p>
               </div>
               <div className="toggleNavDrop">
                 <i
                   onClick={handleNavClick}
-                  className="material-icons md-48"
+                  className="material-icons md-32"
                   id="dropDownIcon"
                 >
                   menu
