@@ -6,7 +6,10 @@ import LoginPage from "../components/Auth/LoginPage.tsx";
 import Restricted from "../components/Auth/Restricted.tsx";
 import VerifyMail from "../components/Auth/VerifyMail.tsx";
 import ResetPassword from "../components/Auth/ResetPassword.tsx";
-import RequireAuth, { RequireEmailVerification } from "./RequireAuth.tsx";
+import RequireAuth, {
+  RequireEmailVerification,
+  NoAuth,
+} from "./RequireAuth.tsx";
 import PersonalizationForm from "../components/Auth/PersonalizationForm.tsx";
 import ProfilePage from "../components/Profile/ProfilePage.tsx";
 import CreatePost from "../components/Posts/CreatePost.tsx";
@@ -24,7 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <SignUpPage />,
+        element: (
+          <NoAuth>
+            <SignUpPage />
+          </NoAuth>
+        ),
         children: [
           {
             path: "/signup/verifyMail",
@@ -38,7 +45,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <LoginPage />,
+        element: (
+          <NoAuth>
+            <LoginPage />
+          </NoAuth>
+        ),
         children: [
           {
             path: "/login/verifyMail",
@@ -58,7 +69,7 @@ const router = createBrowserRouter([
         path: "/personalData",
         element: (
           <RequireAuth>
-              <PersonalizationForm />
+            <PersonalizationForm />
           </RequireAuth>
         ),
       },

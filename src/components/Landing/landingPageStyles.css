@@ -156,7 +156,7 @@ div.landingPage footer p {
   div.landingPage header {
     background: url("../../assets/landingPageHero.jpg");
     color: white;
-    padding: 112px 64px;
+    padding: 128px 64px;
     text-align: left;
     gap: 20px;
   }
@@ -268,7 +268,7 @@ div.landingPage footer p {
 @media screen and (min-width: 1024px) {
 
     div.landingPage header{
-        padding: 124px 64px;
+        padding: 144px 64px;
     }
 
   section.aboutChatter {
@@ -325,7 +325,7 @@ div.landingPage footer p {
     }
 
     div.landingPage header{
-        padding: 10% 10%;
+        padding: 14% 10%;
     }
 
     div.landingPage > * {

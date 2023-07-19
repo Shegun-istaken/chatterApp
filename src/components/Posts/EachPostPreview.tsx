@@ -27,8 +27,8 @@ function EachPostPreview({ item }) {
       <div className="previewDetails">
         {typeof item.title == "string" && (
           <h3>
-            {item.title.length > 21
-              ? `${item.title.slice(0, 22)}...`
+            {item.title.length > 35
+              ? `${item.title.slice(0, 34)}...`
               : item.title}
           </h3>
         )}
@@ -50,6 +50,7 @@ function EachPostPreview({ item }) {
         <PostInteractions
           likesCount={item.likes.length}
           commentsCount={item.comments.length}
+          className="eachPost"
         />
       </div>
       <button className="openPost" onClick={handlePostClick}>

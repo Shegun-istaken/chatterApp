@@ -2,12 +2,23 @@ div.feedPage {
   position: relative;
 }
 
+div.feedPage div.feedHeader{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 24px;
+}
+
+div.feedHeader button.common{
+  padding: 16px 24px;
+}
+
 div.feedPage header {
   top: 0;
   display: flex;
-  margin: 24px;
   justify-content: flex-start;
   align-items: center;
+  width: 90%;
 }
 
 div.feedPage header h1 {
@@ -60,6 +71,18 @@ div.categoriesList button.selected {
 }
 
 @media screen and (min-width: 480px) {
+
+  div.feedPage div.feedHeader{
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px 32px;
+  }
+
+  div.feedPage header{
+    width: 50%;
+  }
+
   div.feedPage div.categoriesList {
     width: 40%;
   }
@@ -70,13 +93,18 @@ div.categoriesList button.selected {
 }
 
 @media screen and (min-width: 768px) {
+
+  div.feedPage div.feedHeader{
+    margin: 24px 64px;
+  }
+
   div.categoriesList button {
     padding: 16px;
   }
 
-  div.feedPage header {
+  /* div.feedPage header {
     padding: 0px 16px;
-  }
+  } */
 
   div.feedPage header h1 {
     font-size: 24px;
@@ -84,9 +112,9 @@ div.categoriesList button.selected {
 }
 
 @media screen and (min-width: 1024px) {
-  div.feedPage header {
+  /* div.feedPage header {
     padding: 0px 48px;
-  }
+  } */
 
   .md-32 {
     font-size: 48px;

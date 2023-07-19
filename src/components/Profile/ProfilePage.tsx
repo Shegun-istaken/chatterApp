@@ -33,8 +33,10 @@ function ProfilePage() {
 
   useEffect(() => {
     if (userData && authorData) {
-      if (authorData.userName == userData.userName) {
-        setAuthorFunctions(true);
+      if (userData.status == "writer") {
+        if (authorData.userName == userData.userName) {
+          setAuthorFunctions(true);
+        }
       }
     }
   }, [authorData, userData]);
@@ -68,10 +70,11 @@ function ProfilePage() {
               </h3>
               <div>
                 <h3>Bio:</h3>
-                { authorData.bio ?
-                <p className="bio">{authorData.bio}</p>
-                : <p>Nothing. Yet...</p>
-              }
+                {authorData.bio ? (
+                  <p className="bio">{authorData.bio}</p>
+                ) : (
+                  <p>Nothing. Yet...</p>
+                )}
               </div>
             </div>
             {authorFunctions && (
@@ -90,10 +93,9 @@ function ProfilePage() {
             )}
           </div>
         ) : (
-          <h1>Loading User Data</h1>
+          <h1 className="profileLoadingData">Loading User Data</h1>
         )}
       </div>
-
       <div>
         <PostPreview list={userPosts} />
       </div>

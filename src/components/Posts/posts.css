@@ -41,20 +41,38 @@ div.authorDetails{
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
-    gap: 16px;
+    align-items: center;
+    column-gap: 16px;
+}
+
+div.authorDetails div > *{
+    margin-bottom: 8px;
 }
 
 div.authorDetails img{
-    width: 48px;
+    width: 64px;
     border-radius: 32px;
+}
+
+div.authorDetails button{
+    padding: 4px 8px;
+    background-color: var(--cerulean);
+    color: var(--platinum);
+    border-radius: 4px;
 }
 
 div.postMarkdown h1{
     font-size: 28px;
+
+}
+
+div.postMarkdown h1, div.postMarkdown h2, div.postMarkdown h3, div.postMarkdown h4, div.postMarkdown h5{
+    margin: 0px 0px 24px 0px;
 }
 
 div.postMarkdown p{
     line-height: 24px;
+    margin: 16px 0px;
 }
 
 img.postCover{
@@ -363,7 +381,7 @@ button.deleteComment{
     
     div.eachPostPreview{
         width: 320px;
-        height: 440px;
+        height: 480px;
         justify-content: space-between;
     }
 
@@ -378,6 +396,10 @@ button.deleteComment{
 
     button.commentButton{
         width: 50%;
+    }
+
+    div.interactionButtons.eachPost{
+        gap: 24px;   
     }
 
 }
@@ -402,9 +424,10 @@ button.deleteComment{
     }
 
     div.interactionButtons{
-        width: 30%;
+        width: 100%;
         margin: 0;
     }
+    
 }
 
 @media screen and (min-width: 1200px){

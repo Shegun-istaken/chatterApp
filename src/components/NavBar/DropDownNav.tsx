@@ -6,7 +6,7 @@ function DropDownNav({
   openNav,
   handleClick,
 }: {
-  userName: string,
+  userName: string;
   openNav: boolean;
   handleClick: any;
 }) {
@@ -15,19 +15,21 @@ function DropDownNav({
       {openNav && (
         <ul className="dropDownNav" id="dropDown" onClick={handleClick}>
           <li>
-            <button>
-              <Link to="/home">Home</Link>
-            </button>
+            <Link to="/home">
+              <button>Home</button>
+            </Link>
           </li>
 
-          <button className="navFeed">
-            <Link to="/feed">Feed</Link>
-          </button>
+          <li>
+            <Link to="/feed">
+              <button id="dropDown" className="navFeed">Feed</button>
+            </Link>
+          </li>
 
           <li>
-            <button>
-              <Link to={`/profile/${userName}`}>Your Profile</Link>
-            </button>
+            <Link to={`/profile/${userName}`}>
+              <button>Your Profile</button>
+            </Link>
           </li>
           <li>
             <button onClick={handleSignOut}>Sign Out</button>

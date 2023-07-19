@@ -9,7 +9,7 @@ import UserAvatar from "./UserAvatar";
 function MoveToFeed() {
   return (
     <Link to="/feed">
-      <button> Feed</button>{" "}
+      <button>Jump to Feed</button>{" "}
     </Link>
   );
 }
@@ -17,7 +17,7 @@ function MoveToFeed() {
 function MoveToHome() {
   return (
     <Link to="/home">
-      <button>Home</button>{" "}
+      <button>Jump to Home</button>{" "}
     </Link>
   );
 }
@@ -54,6 +54,7 @@ function NavBar() {
     const id = event.target.id;
     if (openNav && id != "dropDownIcon") {
       setOpenNav(false);
+      console.log("closeNav")
     }
   };
 

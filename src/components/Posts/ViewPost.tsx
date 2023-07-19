@@ -43,7 +43,7 @@ function ViewPost() {
       }
     }
 
-    if (post?.likes) {
+    if (post?.likes && userData) {
       if (post.likes.includes(userData.userName)) {
         setIsLikes("added");
       } else {
@@ -106,7 +106,7 @@ function ViewPost() {
             <div className="authorDetails">
               <div onClick={handleAuthorClick}>
                 <p>{author.name}</p>
-                <p>{author.userName}</p>
+                <button>Click to View Author's profile</button>
               </div>
               <UserAvatar url={author.avatarURL} />
             </div>

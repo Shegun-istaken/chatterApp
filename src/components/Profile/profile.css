@@ -18,6 +18,7 @@ div.profileData div:not(:first-child){
 div.profileDataHeading{
     display: flex;
     gap: 8px;
+    align-items: center;
 }
 
 img.profileAvatar{
@@ -38,6 +39,10 @@ button.createProfilePost{
     border-radius: 8px;
 }
 
+h1.profileLoadingData{
+    margin-left: 64px;
+}
+
 @media screen and (min-width: 540px){
 
     div.profileData{
@@ -55,6 +60,15 @@ button.createProfilePost{
     p.bio{
         width: 50%;
     }
-    
 
+    img.profileAvatar{
+        width: 64px;
+    }
+    
+}
+
+@media screen and (min-width: 1024px){
+    img.profileAvatar{
+        width: 80px;
+    }
 }
