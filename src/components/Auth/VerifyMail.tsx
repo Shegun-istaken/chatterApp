@@ -1,7 +1,5 @@
 import { sendVerificationMail } from "../../firebase_setup/firebase";
-import { auth } from "../../firebase_setup/firebase";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 type typeProps = {
   type: string;
@@ -11,11 +9,6 @@ function VerifyMail({ type }: typeProps) {
   const forSignUp = "You're almost there";
   const forLogin = "You haven't verified your mail";
 
-  useEffect(() => {
-    if (auth.currentUser) {
-      console.log("checking", auth, auth.currentUser.emailVerified);
-    }
-  }, [auth]);
   return (
     <section className="authModal verifyMail">
       <h1>
