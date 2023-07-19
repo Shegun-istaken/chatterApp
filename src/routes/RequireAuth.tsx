@@ -1,6 +1,7 @@
 import AuthConsumer from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import { PropsWithChildren } from "react";
+import { useEffect } from "react";
 
 export default function RequireAuth({ children }: PropsWithChildren) {
   const { authed } = AuthConsumer();
@@ -18,6 +19,7 @@ export default function RequireAuth({ children }: PropsWithChildren) {
 
 function RequireEmailVerification({ children }: PropsWithChildren) {
   const { emailStatus } = AuthConsumer();
+  useEffect(()=>{console.log(emailStatus)}, [emailStatus])
 
   return emailStatus ? <Navigate to="/personalData" /> : children;
 }

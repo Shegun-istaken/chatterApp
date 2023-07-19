@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useManageUsers } from "../../firebase_setup/firebase";
 import AuthConsumer from "../../context/UserContext";
 import { auth } from "../../firebase_setup/firebase";
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 const initialData = {
   userName: "",
@@ -24,15 +24,25 @@ function PersonalizationForm({ edit }: { edit?: boolean }) {
   const nameRef = useRef<HTMLInputElement>(null);
   const avatarRef = useRef<HTMLInputElement>(null);
   const { setNewUser, updateUserData } = useManageUsers();
-  const { createUserReport, userData } = AuthConsumer();
+  const { createUserReport, userData, emailStatus } = AuthConsumer();
   const [formData, setFormData] = useState<initialDataType>(initialData);
   const [response, setResponse] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation()
 
-  console.log(auth.currentUser)
+  console.log(auth.currentUser);
 
-  // useEffect(()=>{
-  //   console.log(formData)
-  // }, [formData])
+  useEffect(()=>{
+    if(emailStatus == false){
+      navigate('/login/verifyMail')
+    }
+  }, [emailStatus, navigate])
+  
+  useEffect(() => {
+      if(location.pathname == "/personalData" && userData){
+        navigate("/editData")
+      }
+  }, [location, userData, navigate]);
 
   useEffect(() => {
     if (userData && edit) {
@@ -43,7 +53,7 @@ function PersonalizationForm({ edit }: { edit?: boolean }) {
         status: userData?.status,
       });
     }
-  }, [userData]);
+  }, [userData, navigate, edit]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -55,7 +65,7 @@ function PersonalizationForm({ edit }: { edit?: boolean }) {
         formData,
         avatarRef.current.files[0]
       );
-      if (typeof response == 'string') {
+      if (typeof response == "string") {
         setResponse(response);
       }
     }
@@ -169,9 +179,8 @@ function PersonalizationForm({ edit }: { edit?: boolean }) {
           />
         </div>
 
-
         <div>
-        <p className="error">{response && response} </p>
+          <p className="error">{response && response} </p>
           <button className="common">Submit</button>
         </div>
 

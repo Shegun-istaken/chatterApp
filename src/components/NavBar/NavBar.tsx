@@ -32,7 +32,7 @@ function NavBar() {
   }
 
   useEffect(() => {
-    if (authed && userData == 0 && location.pathname != "/personalData") {
+    if (authed && userData == 0 && location.pathname != "/personalData" && location.pathname != "/login/verifyMail" && location.pathname != "/signup/verifyMail") {
       navigate("/personalData");
     }
   }, [authed, userData]);
@@ -96,7 +96,7 @@ function NavBar() {
                 />
               </div>
             </>
-          ) : userData == 0 && location.pathname == "/personalData" ? (
+          ) : userData == 0 && location.pathname == "/personalData" || userData == 0 && location.pathname == "/login/verifyMail" || userData == 0 && location.pathname == "/signup/verifyMail"? (
             <></>
           ) : (
             <p>Getting your profile info...</p>

@@ -9,7 +9,7 @@ const authContext = createContext(null);
 
 function useAuth() {
   const [authed, setAuthed] = useState(undefined);
-  const [emailStatus, setEmailStatus] = useState(false);
+  const [emailStatus, setEmailStatus] = useState(null);
   const [signInReport, setSignInReport] = useState("");
   const [signUpReport, setSignUpReport] = useState("");
   const [createUserReport, setCreateUserReport] = useState("");
