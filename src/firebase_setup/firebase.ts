@@ -29,6 +29,7 @@ import {
   where,
   updateDoc,
   deleteDoc,
+  DocumentData,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -123,20 +124,29 @@ function passwordReset(email: string) {
 // }
 
 function useManageUsers() {
-  const { setCreateUserReport, userData, setUserData } = AuthConsumer();
+  const { setCreateUserReport, setUserData } = AuthConsumer();
   const navigate = useNavigate();
+  const {getUser} = useUsers()
 
-  async function checkUsers(id: string) {
+  async function refreshUser(){
+    const data = await getUser()
+    setUserData(data)
+  }
+
+
+  async function checkUsers(userName) {
+    const id = auth.currentUser.uid;
+
     const querySnapshot = await getDocs(collection(db, "Users"));
-    querySnapshot.forEach((doc: any) => {
-      if (doc.username) {
-        console.log(doc.userName, id);
-      } else {
-        console.log(doc);
+    querySnapshot.forEach((doc: DocumentData) => {
+      const data = doc.data();
+      if (data.userName == userName) {
+        console.log("firstStep");
+        if (data.userID != id) {
+          console.log("secondStep");
+          throw new Error("Username already in use");
+        }
       }
-      // if (doc.userName == id) {
-      //   throw new Error("this user already exists");
-      // }
     });
   }
 
@@ -147,21 +157,44 @@ function useManageUsers() {
       await checkUsers(userName);
       await uploadCoverPhoto(id, photo, "avatars");
       const url = await getCoverURL(id, "avatars");
-      await setDoc(doc(db, "Users", id), { ...data, avatarURL: url });
-      setUserData({
-        ...userData,
-        userName: data.userName,
-        userID: id,
+      await setDoc(doc(db, "Users", id), {
+        ...data,
         avatarURL: url,
+        userID: id,
       });
+      refreshUser()
       setCreateUserReport("success");
       navigate("/feed");
     } catch (error) {
       setCreateUserReport(error.message);
+      console.log("updateUserData", error);
+      return error.message;
     }
   }
 
-  return { setNewUser };
+  async function updateUserData(values, file) {
+    const id = auth.currentUser.uid;
+
+    try {
+      if (file && typeof file != "string") {
+        await uploadCoverPhoto(id, file, "avatars");
+        const url = await getCoverURL(id, "avatars");
+        await updateDoc(doc(db, "Users", id), { ...values, avatarURL: url });
+        console.log("done updating");
+        refreshUser()
+        navigate('/feed')
+      } else {
+        await updateDoc(doc(db, "Users", id), { ...values });
+        console.log("done updating...");
+        refreshUser()
+        navigate('/feed')
+      }
+    } catch (error) {
+      console.log("updateUserData", error);
+    }
+  }
+
+  return { setNewUser, updateUserData };
 }
 
 function useUsers() {
@@ -172,6 +205,9 @@ function useUsers() {
       const docRef = doc(db, "Users", id);
       const docSnap = await getDoc(docRef);
       const data = docSnap.data();
+      if(!data){
+        return(0)
+      }
       return data;
     } catch (error) {
       console.log(error);
@@ -209,6 +245,70 @@ async function updatePost(values, file, id) {
   }
 }
 
+async function updatePostLikes(id: string, userName: string) {
+  const data = await getPost(id);
+  const likes = data.likes;
+
+  if (likes.includes(userName)) {
+    const indexToRemove = likes.indexOf(userName);
+    likes.splice(indexToRemove, 1);
+    try {
+      updateDoc(doc(db, "Posts", id), {
+        likes: [...likes],
+      });
+      return "removed";
+    } catch (error) {
+      console.log("deleteLike", error);
+      return;
+    }
+  }
+  // }
+
+  try {
+    const response = await updateDoc(doc(db, "Posts", id), {
+      likes: [...likes, userName],
+    });
+    console.log("done", response, id);
+    return "added";
+  } catch (error) {
+    console.log("updatePostLikes", error);
+  }
+}
+
+async function addComments(id: string, userName: string, comment: string) {
+  try {
+    const data = await getPost(id);
+    updateDoc(doc(db, "Posts", id), {
+      comments: [
+        ...data.comments,
+        {
+          id: new Date().getTime(),
+          user: userName,
+          comment: comment,
+          date: new Date(),
+        },
+      ],
+    });
+    console.log("comment added");
+  } catch (error) {
+    console.log("addComment", error);
+  }
+}
+
+async function deleteComment(postID, commentId) {
+  try {
+    const data = await getPost(postID);
+    const updatedComments = await data.comments.filter(
+      (comment) => comment.id != commentId
+    );
+    updateDoc(doc(db, "Posts", postID), {
+      comments: [...updatedComments],
+    });
+  } catch (error) {
+    console.log("deleteComment", error);
+  }
+}
+
 function useFetchPosts() {
   const [posts, setPosts] = useState(null);
 
@@ -235,6 +335,8 @@ function useFetchPosts() {
             categories: data.categories,
             coverURL: data.coverURL,
             date: data.date,
+            likes: data.likes,
+            comments: data.comments,
           };
         });
 
@@ -251,53 +353,54 @@ function useFetchPosts() {
 //   const [userPosts, setUserPosts] = useState(null);
 
 //   useEffect(() => {
-    async function getUserPosts(userName: string) {
-      const q = query(collection(db, "Posts"), where("author", "==", userName));
+async function getUserPosts(userName: string) {
+  const q = query(collection(db, "Posts"), where("author", "==", userName));
 
-      const querySnapshot = await getDocs(q);
-      const docIdSet = new Set();
+  const querySnapshot = await getDocs(q);
+  const docIdSet = new Set();
 
-      const fetchedPosts = querySnapshot.docs
-        .filter((doc) => {
-          // Check if the document ID already exists in the Set
-          if (docIdSet.has(doc.id)) {
-            return false; // Skip this document
-          }
-          docIdSet.add(doc.id); // Add the document ID to the Set
-          return true;
-        })
-        .map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            author: data.author,
-            title: data.title,
-            categories: data.categories,
-            coverURL: data.coverURL,
-            date: data.date,
-          };
-        });
+  const fetchedPosts = querySnapshot.docs
+    .filter((doc) => {
+      // Check if the document ID already exists in the Set
+      if (docIdSet.has(doc.id)) {
+        return false; // Skip this document
+      }
+      docIdSet.add(doc.id); // Add the document ID to the Set
+      return true;
+    })
+    .map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        author: data.author,
+        title: data.title,
+        categories: data.categories,
+        coverURL: data.coverURL,
+        date: data.date,
+        likes: data.likes,
+        comments: data.comments,
+      };
+    });
 
-      return fetchedPosts
-    }
+  return fetchedPosts;
+}
 
-  //   getUserPosts();
-  // }, []);
+//   getUserPosts();
+// }, []);
 
 //   return { userPosts };
 // }
 
-async function getAuthorData(username){
+async function getAuthorData(username) {
+  const q = query(collection(db, "Users"), where("userName", "==", username));
 
-    const q = query(collection(db, "Users"), where("userName", "==", username));
+  const querySnapshot = await getDocs(q);
+  // const docIdSet = new Set();
 
-    const querySnapshot = await getDocs(q);
-    // const docIdSet = new Set();
+  const doc = await querySnapshot.docs[0];
+  const data = await doc.data();
 
-    const doc = await querySnapshot.docs[0]
-    const data = await doc.data()
-
-    return data
+  return data;
 }
 
 async function getCategoryPosts(type) {
@@ -326,6 +429,8 @@ async function getCategoryPosts(type) {
         categories: data.categories,
         coverURL: data.coverURL,
         date: data.date,
+        likes: data.likes,
+        comments: data.comments,
       };
     });
 
@@ -396,6 +501,9 @@ export {
   getCategoryPosts,
   getPost,
   updatePost,
+  updatePostLikes,
   deletePost,
   getAuthorData,
+  addComments,
+  deleteComment,
 };

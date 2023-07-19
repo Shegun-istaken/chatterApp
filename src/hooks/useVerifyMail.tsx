@@ -2,7 +2,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendVerificationMail,
-  updateProfile,
+  // updateProfile,
   useUsers,
 } from "../firebase_setup/firebase";
 import { getAuth } from "firebase/auth";
@@ -15,7 +15,7 @@ function useVerifyMail() {
   const { updateSignInReport, updateSignUpReport } = AuthConsumer();
   const { getUser } = useUsers();
 
-  function signUp(email: string, password: string, userName: string) {
+  function signUp(email: string, password: string,) {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -25,11 +25,6 @@ function useVerifyMail() {
         updateSignUpReport("success");
       })
       .then(() => {
-        if (auth.currentUser) {
-          updateProfile(auth.currentUser, {
-            displayName: userName,
-          });
-        }
         sendVerificationMail();
       })
       .then(() => checkMailStatus("signup"))

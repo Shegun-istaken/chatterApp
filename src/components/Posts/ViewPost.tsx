@@ -1,11 +1,20 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { getPost, getAuthorData } from "../../firebase_setup/firebase";
-import { useEffect, useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import {
+  getPost,
+  getAuthorData,
+  deletePost,
+  updatePostLikes,
+  addComments,
+  deleteComment,
+} from "../../firebase_setup/firebase";
+import { useEffect, useState, useRef } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { deletePost } from "../../firebase_setup/firebase";
 import AuthConsumer from "../../context/UserContext";
 import UserAvatar from "../NavBar/userAvatar";
 import "./posts.css";
+import PostInteractions from "./PostInteractions";
+import CommentsView from "./CommentsView";
+import CreateComment from "./CreateComment";
 
 function ViewPost() {
   const [post, setPost] = useState(null);
@@ -14,15 +23,16 @@ function ViewPost() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { userData } = AuthConsumer();
+  const commentRef = useRef<HTMLTextAreaElement>();
+  const [isLikes, setIsLikes] = useState("");
 
+  async function initGetPost() {
+    const fetchedPost = await getPost(id);
+    setPost(fetchedPost);
+    const authorInfo = await getAuthorData(fetchedPost.author);
+    setAuthor(authorInfo);
+  }
   useEffect(() => {
-    async function initGetPost() {
-      const fetchedPost = await getPost(id);
-      setPost(fetchedPost);
-      const authorInfo = await getAuthorData(fetchedPost.author);
-      setAuthor(authorInfo);
-    }
-
     initGetPost();
   }, []);
 
@@ -30,6 +40,14 @@ function ViewPost() {
     if (userData && post) {
       if (post.author == userData.userName) {
         setAuthorFunctions(true);
+      }
+    }
+
+    if (post?.likes) {
+      if (post.likes.includes(userData.userName)) {
+        setIsLikes("added");
+      } else {
+        setIsLikes("");
       }
     }
   }, [post, userData]);
@@ -47,14 +65,39 @@ function ViewPost() {
     navigate(`/profile/${author.userName}`);
   }
 
+  async function handleLikeClick() {
+    if (userData) {
+      const response = await updatePostLikes(id, userData.userName);
+      setIsLikes(response);
+      initGetPost();
+    }
+  }
+
+  async function handleComment() {
+    if (commentRef.current.value.length > 1) {
+      const value = commentRef.current.value;
+      await addComments(id, userData.userName, value);
+      initGetPost();
+    }
+  }
+
+  async function handleDeleteComment(commentId: string) {
+    await deleteComment(id, commentId);
+    initGetPost();
+  }
+
   return (
     <div className="viewPost">
       {post != null ? (
         <div className="viewPostContent">
           {authorFunctions && (
             <div className="authorFunctions">
-              <button onClick={handleDeletePost}>Delete</button>
-              <button onClick={handleEditClick}>Edit</button>
+              <button className="common" onClick={handleDeletePost}>
+                Delete Post
+              </button>
+              <button className="common" onClick={handleEditClick}>
+                Edit Post
+              </button>
             </div>
           )}
 
@@ -75,6 +118,34 @@ function ViewPost() {
           )}
           <div className="postMarkdown">
             <ReactMarkdown>{post.content}</ReactMarkdown>
+          </div>
+
+          <PostInteractions
+            like={handleLikeClick}
+            likesCount={post.likes.length}
+            commentsCount={post.comments.length}
+            className="onFullView"
+            response={isLikes}
+          />
+          <div className="addComment">
+            {userData ? (
+              <CreateComment
+                commentRef={commentRef}
+                onComment={handleComment}
+              />
+            ) : (
+              <p>
+                <Link to="/signup">Create an Account</Link> to interact with
+                Chatter Posts
+              </p>
+            )}
+            {post.comments.map((comment) => (
+              <CommentsView
+                key={comment.id}
+                comment={comment}
+                handleCommentDelete={handleDeleteComment}
+              />
+            ))}
           </div>
         </div>
       ) : (

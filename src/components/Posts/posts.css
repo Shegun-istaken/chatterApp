@@ -32,8 +32,9 @@ div.moreDetails{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    row-gap: 4px;
+    row-gap: 8px;
     column-gap: 8px;
+    color: var(--platinum);
 }
 
 div.authorDetails{
@@ -149,7 +150,7 @@ div.eachPostPreview div.previewDetails{
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
 }
 
 div.eachPostPreview h3{
@@ -176,7 +177,7 @@ p.categoryPreview{
     border-radius: 4px;
 }
 
-div.eachPostPreview i{
+div.eachPostPreview i.profile{
     border: 1px solid var(--indigo-dye);
     border-radius: 96px;
 }
@@ -188,6 +189,89 @@ div.eachPostPreview button.openPost{
     border-radius: 8px;
 }
 
+div.interactionButtons{
+    display: flex;
+    justify-content: space-between;
+}
+
+div.interactionButtons.onFullView i.selected{
+    color: var(--cerulean);
+}
+
+div.interactionButtons div{
+    display: flex;
+    gap: 8px;
+}
+
+div.addComment{
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+button.commentButton{
+    padding: 16px 16px;
+    border-radius: 8px;
+    width: 70%;
+}
+
+div.createComment{
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+div.createComment textarea{
+    border-radius: 8px;
+    padding: 16px;
+}
+
+div.createComment label{
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+}
+
+div.createComment label i{
+    border-radius: 96px;
+    border: 1px solid var(--indigo-dye);
+}
+
+div.eachComment{
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    background-color: var(--sky-blue);
+    padding: 16px;
+    border-radius: 8px;
+}
+
+div.eachComment div.user{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+div.user p{
+    font-size: 14px;
+}
+
+div.eachComment p.date{
+    font-size: 12px;
+    font-weight: 300;
+}
+
+button.deleteComment{
+    width: 70%;
+    padding: 8px 4px;
+    background-color:var(--cerulean);
+    color: white;
+    border-radius: 8px;
+
+}
+
 @media screen and (min-width: 480px){
 
     div.postsPreview{
@@ -196,6 +280,20 @@ div.eachPostPreview button.openPost{
 
     div.eachPostPreview{
         width: 80%;
+    }
+
+    div.eachComment{
+        padding: 16px 24px;
+    }
+
+    button.deleteComment{
+        margin: 0 auto;
+        width: 50%;
+    }
+
+    div.createComment label{
+        justify-content: flex-start;
+        column-gap: 32px;
     }
 }
 
@@ -212,6 +310,24 @@ div.eachPostPreview button.openPost{
     div.eachPostPreview{
         width: 70%;
     }
+
+    div.eachComment{
+        padding: 16px 32px;
+        width: 70%;
+    }
+
+    button.deleteComment{
+        margin: 0;
+    }
+
+    button.commentButton{
+        margin: 0 auto;
+    }
+
+    div.interactionButtons{
+        width: 50%;
+        margin: 0 auto;
+    }
 }
 
 @media screen and (min-width: 768px){
@@ -224,8 +340,14 @@ div.eachPostPreview button.openPost{
         height: 480px;
     }
 
+    div.authorFunctions{
+        justify-content: flex-start;
+        column-gap: 24px;
+    }
+
     div.authorFunctions button{
-        font-size: 18px;
+        font-size: 14px;
+        width: 24%;
     }
 
     div.titleInput input{
@@ -241,13 +363,21 @@ div.eachPostPreview button.openPost{
     
     div.eachPostPreview{
         width: 320px;
-        height: 400px;
+        height: 440px;
         justify-content: space-between;
     }
 
     div.postsPreview img.postCover{
         height: 160px;
         object-fit: cover;
+    }
+
+    div.eachComment{
+        width: 50%;
+    }
+
+    button.commentButton{
+        width: 50%;
     }
 
 }
@@ -261,5 +391,30 @@ div.eachPostPreview button.openPost{
     img.postCover{
         height: 640px;
     }
+
+    div.eachComment{
+        width: 40%;
+    }
+
+    button.commentButton{
+       width: 40%;
+       margin: 0;
+    }
+
+    div.interactionButtons{
+        width: 30%;
+        margin: 0;
+    }
+}
+
+@media screen and (min-width: 1200px){
+    div.eachComment{
+        width: 30%;
+    }
+
+    button.commentButton{
+        width: 30%;
+        margin: 0;
+     }
 }
 

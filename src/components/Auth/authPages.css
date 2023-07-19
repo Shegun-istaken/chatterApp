@@ -131,6 +131,48 @@ div.displayError p.error {
   color: rgb(175, 49, 49);
 }
 
+div.personalizationPage{
+  margin-bottom: 64px;
+}
+
+form.personalizationPage {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  background-color: var(--cerulean);
+  color: var(--platinum);
+  padding: 48px 16px;
+  gap: 32px;
+  border-radius: 8px;
+}
+
+form.personalizationPage > div{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+form.personalizationPage small{
+  color: var(--indigo-dye);
+  display: block;
+}
+
+form.personalizationPage input, form.personalizationPage textarea, form.personalizationPage select{
+  padding: 8px;
+  border-radius: 8px;
+}
+
+form.personalizationPage button{
+  padding: 16px;
+  border-radius: 8px;
+}
+
+p.error{
+  font-size: 14px;
+  color: red;
+}
+
 @media screen and (min-width: 480px) {
   form.authForm {
     padding: 24px 32px;
@@ -165,6 +207,10 @@ div.displayError p.error {
   section.authModal.verifyMail {
     gap: 24px;
   }
+
+  form.personalizationPage{
+    padding: 48px 64px;
+  }
 }
 
 @media screen and (min-width: 968px) {
@@ -190,6 +236,10 @@ div.displayError p.error {
   section.authModal {
     left: 25%;
     width: 50%;
+  }
+
+  form.personalizationPage{
+    width: 60%;
   }
 }
 

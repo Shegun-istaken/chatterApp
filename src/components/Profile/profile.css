@@ -52,4 +52,9 @@ button.createProfilePost{
         width: 30%;
     }
 
+    p.bio{
+        width: 50%;
+    }
+    
+
 }

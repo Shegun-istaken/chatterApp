@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import cover from "../../assets/placeholderCover.jpg";
+import PostInteractions from "./PostInteractions";
 
 function EachPostPreview({ item }) {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ function EachPostPreview({ item }) {
 
   return (
     <div className="eachPostPreview" onClick={handlePostClick}>
-      {item.coverURL && (
+      {item.coverURL ? (
         <img
           className="postCover"
           src={item.coverURL}
@@ -20,6 +21,8 @@ function EachPostPreview({ item }) {
             currentTarget.src = `${cover}`;
           }}
         />
+      ) : (
+        <img className="postCover" src={cover} alt="" />
       )}
       <div className="previewDetails">
         {typeof item.title == "string" && (
@@ -40,10 +43,14 @@ function EachPostPreview({ item }) {
         <div className="moreDetails">
           <div className="authorDetails">
             <p>{item.author}</p>
-            <i className="material-icons md-24">person</i>
+            <i className="material-icons md-24 profile">person</i>
           </div>
           {item.date && <p>{item.date.toDate().toDateString()}</p>}
         </div>
+        <PostInteractions
+          likesCount={item.likes.length}
+          commentsCount={item.comments.length}
+        />
       </div>
       <button className="openPost" onClick={handlePostClick}>
         Open Post

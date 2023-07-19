@@ -38,6 +38,7 @@ function useAuth() {
   function updateSignUpReport(report: string) {
     setSignUpReport(report);
   }
+
   return {
     authed,
     logInAuth,

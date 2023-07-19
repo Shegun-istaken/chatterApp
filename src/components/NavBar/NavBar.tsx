@@ -3,7 +3,7 @@ import AuthConsumer from "../../context/UserContext";
 import "./NavBar.css";
 import DropDownNav from "./DropDownNav";
 import chatter from "../../assets/CHATTER.svg";
-import { useState, } from "react";
+import { useState, useEffect } from "react";
 import UserAvatar from "./userAvatar";
 
 function MoveToFeed() {
@@ -30,6 +30,12 @@ function NavBar() {
   function handleNavClick() {
     setOpenNav(!openNav);
   }
+
+  useEffect(() => {
+    if (authed && userData == 0 && location.pathname != "/personalData") {
+      navigate("/personalData");
+    }
+  }, [authed, userData]);
 
   function handleDropDownClick(event) {
     const id = event.target.id;
@@ -90,6 +96,8 @@ function NavBar() {
                 />
               </div>
             </>
+          ) : userData == 0 && location.pathname == "/personalData" ? (
+            <></>
           ) : (
             <p>Getting your profile info...</p>
           )}

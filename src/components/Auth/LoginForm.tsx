@@ -22,7 +22,6 @@ function LoginForm() {
     },
     validate,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
       setVerifying(true);
       if (values.email && values.password) {
         signIn(values.email, values.password);

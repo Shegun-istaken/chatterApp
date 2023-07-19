@@ -58,7 +58,15 @@ const router = createBrowserRouter([
         path: "/personalData",
         element: (
           <RequireAuth>
-            <PersonalizationForm />
+              <PersonalizationForm />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "/editData/",
+        element: (
+          <RequireAuth>
+            <PersonalizationForm edit={true} />
           </RequireAuth>
         ),
       },
@@ -84,9 +92,9 @@ const router = createBrowserRouter([
               <RequireAuth>
                 <ProfilePage />
               </RequireAuth>
-            )
-          }
-        ]
+            ),
+          },
+        ],
       },
       {
         path: "/createPost",
@@ -95,17 +103,20 @@ const router = createBrowserRouter([
             <CreatePost type="new" />
           </RequireAuth>
         ),
-      },{
+      },
+      {
         path: "/editPost/:id",
         element: (
           <RequireAuth>
-            <CreatePost type="edit"/>
+            <CreatePost type="edit" />
           </RequireAuth>
-        )
-      },{
+        ),
+      },
+      {
         path: "/feed",
-        element: <Feed />
-      },{
+        element: <Feed />,
+      },
+      {
         path: "/post/:id",
         element: <ViewPost />,
       },

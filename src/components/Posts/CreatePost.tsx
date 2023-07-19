@@ -14,6 +14,8 @@ const initialData = {
   content: "",
   categories: [],
   coverURL: null,
+  likes: [],
+  comments: [],
 };
 
 type initialDataType = {
@@ -22,6 +24,8 @@ type initialDataType = {
   content: string;
   categories: string[];
   coverURL: null | File | string;
+  likes: string[],
+  comments: string[],
 };
 
 function CreatePost({ type }: { type: string }) {
@@ -103,12 +107,6 @@ function CreatePost({ type }: { type: string }) {
   function clearAll() {
     setValues(initialData);
   }
-
-  // const date = new Date();
-  // console.log(0, date)
-  // console.log(1, date.toLocaleDateString());
-  // console.log(2, date.toDateString());
-  // console.log(3, date.toGMTString());
 
   return (
     <div className="createPost postCase">

@@ -25,8 +25,10 @@ function ProfilePage() {
       setAuthorData(data);
     }
 
-    getPosts();
-    getAuthor();
+    if (id.userName) {
+      getPosts();
+      getAuthor();
+    }
   }, [id]);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ function ProfilePage() {
 
   useEffect(() => {
     if (userData) {
-      if (location.pathname == "/profile") {
+      if (location.pathname == "/profile" || location.pathname == "/profile/") {
         navigate(`/profile/${userData.userName}`);
       }
     }
@@ -64,12 +66,26 @@ function ProfilePage() {
               <h3>
                 Chatter Status: <span>{authorData.status}</span>
               </h3>
+              <div>
+                <h3>Bio:</h3>
+                { authorData.bio ?
+                <p className="bio">{authorData.bio}</p>
+                : <p>Nothing. Yet...</p>
+              }
+              </div>
             </div>
             {authorFunctions && (
               <div>
-                <button className="createProfilePost common">
-                  <Link to="/createPost">Create New Post</Link>
-                </button>
+                <Link to={"/editData"}>
+                  <button className="createProfilePost common">
+                    Edit Your Personal Data
+                  </button>
+                </Link>
+                <Link to="/createPost">
+                  <button className="createProfilePost common">
+                    Create New Post
+                  </button>
+                </Link>
               </div>
             )}
           </div>

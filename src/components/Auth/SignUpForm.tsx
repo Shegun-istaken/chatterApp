@@ -15,7 +15,6 @@ function SignUpForm() {
 
   const formik = useFormik({
     initialValues: {
-      userName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -23,8 +22,7 @@ function SignUpForm() {
     validate,
     onSubmit: (values) => {
       setVerifying(true)
-      alert(JSON.stringify(values, null, 2)); 
-      signUp(values.email, values.password, values.userName);
+      signUp(values.email, values.password);
     },
   });
   
@@ -40,7 +38,7 @@ function SignUpForm() {
   return (
     <section>
       <form className="authForm" onSubmit={formik.handleSubmit}>
-        <div>
+        {/* <div>
           <label htmlFor="userName">User Name</label>
           <input
             id="userName"
@@ -53,7 +51,7 @@ function SignUpForm() {
           {formik.touched.userName && formik.errors.userName ? (
             <p className="formErrors">{formik.errors.userName}</p>
           ) : null}
-        </div>
+        </div> */}
 
         <div>
           <label htmlFor="email">Email Address</label>
