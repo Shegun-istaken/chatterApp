@@ -10,7 +10,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import AuthConsumer from "../../context/UserContext";
-import UserAvatar from "../NavBar/userAvatar";
+import UserAvatar from "../NavBar/UserAvatar";
 import "./posts.css";
 import PostInteractions from "./PostInteractions";
 import CommentsView from "./CommentsView";

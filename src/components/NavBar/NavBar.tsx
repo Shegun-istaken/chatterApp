@@ -4,7 +4,7 @@ import "./NavBar.css";
 import DropDownNav from "./DropDownNav";
 import chatter from "../../assets/CHATTER.svg";
 import { useState, useEffect } from "react";
-import UserAvatar from "./userAvatar";
+import UserAvatar from "./UserAvatar";
 
 function MoveToFeed() {
   return (
@@ -32,7 +32,13 @@ function NavBar() {
   }
 
   useEffect(() => {
-    if (authed && userData == 0 && location.pathname != "/personalData" && location.pathname != "/login/verifyMail" && location.pathname != "/signup/verifyMail") {
+    if (
+      authed &&
+      userData == 0 &&
+      location.pathname != "/personalData" &&
+      location.pathname != "/login/verifyMail" &&
+      location.pathname != "/signup/verifyMail"
+    ) {
       navigate("/personalData");
     }
   }, [authed, userData]);
@@ -96,7 +102,9 @@ function NavBar() {
                 />
               </div>
             </>
-          ) : userData == 0 && location.pathname == "/personalData" || userData == 0 && location.pathname == "/login/verifyMail" || userData == 0 && location.pathname == "/signup/verifyMail"? (
+          ) : (userData == 0 && location.pathname == "/personalData") ||
+            (userData == 0 && location.pathname == "/login/verifyMail") ||
+            (userData == 0 && location.pathname == "/signup/verifyMail") ? (
             <></>
           ) : (
             <p>Getting your profile info...</p>
