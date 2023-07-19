@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { getAuthorData, getUserPosts } from "../../firebase_setup/firebase";
 import PostPreview from "../Posts/PostPreview";
 import "./profile.css";
-import UserAvatar from "../NavBar/userAvatar";
+import UserAvatar from "../NavBar/userAvatar.tsx";
 import { useEffect, useState } from "react";
 
 function ProfilePage() {
