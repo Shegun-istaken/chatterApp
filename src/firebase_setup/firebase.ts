@@ -126,13 +126,12 @@ function passwordReset(email: string) {
 function useManageUsers() {
   const { setCreateUserReport, setUserData } = AuthConsumer();
   const navigate = useNavigate();
-  const {getUser} = useUsers()
+  const { getUser } = useUsers();
 
-  async function refreshUser(){
-    const data = await getUser()
-    setUserData(data)
+  async function refreshUser() {
+    const data = await getUser();
+    setUserData(data);
   }
-
 
   async function checkUsers(userName) {
     const id = auth.currentUser.uid;
@@ -162,7 +161,7 @@ function useManageUsers() {
         avatarURL: url,
         userID: id,
       });
-      refreshUser()
+      refreshUser();
       setCreateUserReport("success");
       navigate("/feed");
     } catch (error) {
@@ -181,13 +180,13 @@ function useManageUsers() {
         const url = await getCoverURL(id, "avatars");
         await updateDoc(doc(db, "Users", id), { ...values, avatarURL: url });
         console.log("done updating");
-        refreshUser()
-        navigate('/feed')
+        refreshUser();
+        navigate("/feed");
       } else {
         await updateDoc(doc(db, "Users", id), { ...values });
         console.log("done updating...");
-        refreshUser()
-        navigate('/feed')
+        refreshUser();
+        navigate("/feed");
       }
     } catch (error) {
       console.log("updateUserData", error);
@@ -205,8 +204,8 @@ function useUsers() {
       const docRef = doc(db, "Users", id);
       const docSnap = await getDoc(docRef);
       const data = docSnap.data();
-      if(!data){
-        return(0)
+      if (!data) {
+        return 0;
       }
       return data;
     } catch (error) {
@@ -275,6 +274,28 @@ async function updatePostLikes(id: string, userName: string) {
   }
 }
 
+async function updatePostViews(id: string, userName?: string) {
+  const data = await getPost(id);
+  const views = data.views;
+
+  try {
+    if (userName) {
+      if (views.includes(userName)) {
+        return;
+      } else
+        updateDoc(doc(db, "Posts", id), {
+          views: [...views, userName],
+        });
+    } else {
+      updateDoc(doc(db, "Posts", id), {
+        views: [...views, `${views.length + 1}`],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function addComments(id: string, userName: string, comment: string) {
   try {
     const data = await getPost(id);
@@ -337,6 +358,7 @@ function useFetchPosts() {
             date: data.date,
             likes: data.likes,
             comments: data.comments,
+            views: data.views,
           };
         });
 
@@ -379,6 +401,7 @@ async function getUserPosts(userName: string) {
         date: data.date,
         likes: data.likes,
         comments: data.comments,
+        views: data.views,
       };
     });
 
@@ -431,6 +454,7 @@ async function getCategoryPosts(type) {
         date: data.date,
         likes: data.likes,
         comments: data.comments,
+        views: data.views,
       };
     });
 
@@ -506,4 +530,5 @@ export {
   getAuthorData,
   addComments,
   deleteComment,
+  updatePostViews,
 };

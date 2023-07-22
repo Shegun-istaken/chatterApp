@@ -50,6 +50,7 @@ function EachPostPreview({ item }) {
         <PostInteractions
           likesCount={item.likes.length}
           commentsCount={item.comments.length}
+          viewsCount={item.views.length}
           className="eachPost"
         />
       </div>

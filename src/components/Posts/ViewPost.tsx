@@ -6,6 +6,7 @@ import {
   updatePostLikes,
   addComments,
   deleteComment,
+  updatePostViews,
 } from "../../firebase_setup/firebase";
 import { useEffect, useState, useRef } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -35,6 +36,23 @@ function ViewPost() {
   useEffect(() => {
     initGetPost();
   }, []);
+
+  function updateViewCount() {
+    if (!userData) {
+      updatePostViews(id);
+    } else if (userData) {
+      updatePostViews(id, userData.userName);
+    }
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateViewCount();
+    }, 15000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [userData]);
 
   useEffect(() => {
     if (userData && post) {
@@ -123,6 +141,7 @@ function ViewPost() {
           <PostInteractions
             like={handleLikeClick}
             likesCount={post.likes.length}
+            viewsCount={post.views.length}
             commentsCount={post.comments.length}
             className="onFullView"
             response={isLikes}

@@ -16,6 +16,7 @@ const initialData = {
   coverURL: null,
   likes: [],
   comments: [],
+  views: [],
 };
 
 type initialDataType = {
@@ -24,8 +25,9 @@ type initialDataType = {
   content: string;
   categories: string[];
   coverURL: null | File | string;
-  likes: string[],
-  comments: string[],
+  likes: string[];
+  comments: string[];
+  views: string[];
 };
 
 function CreatePost({ type }: { type: string }) {
